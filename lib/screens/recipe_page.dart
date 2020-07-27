@@ -59,7 +59,39 @@ class _RecipePageState extends State<RecipePage> {
                       print('Image Pressed');
                     },
                     child: Container(
-                      child: Text(recipeMaker[index].title),
+                      alignment: Alignment.bottomRight,
+                      child: FittedBox(
+                        child: Container(
+                          color: Color.fromRGBO(204, 223, 252, .3),
+                          child: RichText(
+                            overflow: TextOverflow.ellipsis,
+                            text: TextSpan(
+                              text: limitText(recipeMaker[index].title),
+                              style: TextStyle(
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(-1.0, -1.0),
+                                    color: Colors.black,
+                                  ),
+                                  Shadow(
+                                    offset: Offset(1.0, -1.0),
+                                    color: Colors.black,
+                                  ),
+                                  Shadow(
+                                    offset: Offset(1.0, 1.0),
+                                    color: Colors.black,
+                                  ),
+                                  Shadow(
+                                    offset: Offset(-1.0, 1.0),
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
@@ -79,5 +111,12 @@ class _RecipePageState extends State<RecipePage> {
         ],
       ),
     );
+  }
+
+  String limitText(String text) {
+    if (text.length > 15) {
+      return text.substring(0, 15) + '...';
+    }
+    return text;
   }
 }
