@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/utils/http_service.dart';
 import 'package:recipe_app/models/recipe.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecipePage extends StatefulWidget {
   @override
@@ -56,7 +57,8 @@ class _RecipePageState extends State<RecipePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: GestureDetector(
                     onTap: () {
-                      print('Image Pressed');
+                      print(recipeMaker[index].url);
+                      _launchURL(recipeMaker[index].url);
                     },
                     child: Container(
                       alignment: Alignment.bottomRight,
@@ -98,7 +100,7 @@ class _RecipePageState extends State<RecipePage> {
                           image: NetworkImage(
                               'https://spoonacular.com/recipeImages/' +
                                   recipeMaker[index].id.toString() +
-                                  '-240x150.jpg'),
+                                  '-636x393.jpg'),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -118,5 +120,14 @@ class _RecipePageState extends State<RecipePage> {
       return text.substring(0, 15) + '...';
     }
     return text;
+  }
+}
+
+_launchURL(String recipe) async {
+  final url = recipe;
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
   }
 }
