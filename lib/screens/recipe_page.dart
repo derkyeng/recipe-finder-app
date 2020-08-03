@@ -19,31 +19,40 @@ class _RecipePageState extends State<RecipePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipes'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () async {
-              search = _searchController.text;
-              recipeMaker = await httpService.getRecipes(search);
-              setState(() {
-                controller.animateTo(0,
-                    duration: Duration(microseconds: 500),
-                    curve: Curves.easeInOut);
-                if (recipeMaker.isEmpty) {
-                  print('No Recipes');
-                }
-              });
-            },
+        centerTitle: true,
+        title: Text(
+          'Recipe Finder',
+          style: TextStyle(
+            color: Colors.purple[200],
           ),
-        ],
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
       body: Column(
         children: <Widget>[
-          TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Recipe',
+          Container(
+            padding: EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Recipe',
+              ),
+              onSubmitted: (text) async {
+                search = _searchController.text;
+                recipeMaker = await httpService.getRecipes(search);
+                setState(() {
+                  controller.animateTo(0,
+                      duration: Duration(microseconds: 500),
+                      curve: Curves.easeInOut);
+                  if (recipeMaker.isEmpty) {
+                    print('No Recipes');
+                  }
+                });
+              },
             ),
           ),
           Expanded(
@@ -111,6 +120,24 @@ class _RecipePageState extends State<RecipePage> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purple[200],
+        child: Icon(
+          Icons.search,
+          color: Colors.white,
+        ),
+        onPressed: () async {
+          search = _searchController.text;
+          recipeMaker = await httpService.getRecipes(search);
+          setState(() {
+            controller.animateTo(0,
+                duration: Duration(microseconds: 500), curve: Curves.easeInOut);
+            if (recipeMaker.isEmpty) {
+              print('No Recipes');
+            }
+          });
+        },
       ),
     );
   }
